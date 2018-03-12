@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">App Marly Cordeiro</string>
+    <string name="bt_consultas_txt">CONSULTAS</string>
+    <string name="bt_pacientes_txt">PACIENTES</string>
+    <string name="bt_eventos.txt">EVENTOS</string>
+    <string name="logomarly">logomarly</string>
+    <string name="form_nome">*Nome</string>
+    <string name="form_email">*E-mail</string>
+    <string name="form_telefone">*Telefone</string>
+    <string name="form_endereco">Endereço</string>
+    <string name="bt_form_cadastrar">CADASTRAR</string>
+    <string name="form_observacao">Observação</string>
+    <string name="form_cidade">Cidade</string>
+    <string name="form_masculino">Masculino</string>
+    <string name="form_feminino">Feminino</string>
+    <string name="login_user_hint">E-mail</string>
+    <string name="login_senha_hint">Senha</string>
+    <string name="login_button">LOGIN</string>
+    <string name="login_logomarly">logo marly</string>
+    <string name="bt_logout">OUT</string>
+    <string name="linha_cli_txt_nome">TextView</string>
+    <string name="linha_cli_txt_telefone">TextView</string>
+</resources>

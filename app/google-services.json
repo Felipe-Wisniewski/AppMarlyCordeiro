@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "113429947756",
+    "firebase_url": "https://appmarlycordeiro.firebaseio.com",
+    "project_id": "appmarlycordeiro",
+    "storage_bucket": "appmarlycordeiro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113429947756:android:9d193211a551a695",
+        "android_client_info": {
+          "package_name": "com.tcc.appmarlycordeiro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113429947756-gae05cn40acu9rg4j68dmg747eisor69.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tcc.appmarlycordeiro",
+            "certificate_hash": "75d9ef5827e67a8b5eba1993a69a1cfccf3810d9"
+          }
+        },
+        {
+          "client_id": "113429947756-s7d7nfbotn7r7jf11et7qho2u165daop.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUZdWVqIGWaBm_wQxB76XxBQm839V9io0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113429947756-s7d7nfbotn7r7jf11et7qho2u165daop.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/linha_cli_txt_nome_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/linha_cli_txt_telefone"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/linha_cli_txt_tel_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linha_cli_txt_nome_id"
+        android:layout_centerHorizontal="true"
+        android:paddingEnd="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/linha_cli_txt_nome" />
+</android.widget.RelativeLayout>
