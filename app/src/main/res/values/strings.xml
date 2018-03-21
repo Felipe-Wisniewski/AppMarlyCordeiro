@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App Marly Cordeiro</string>
+    <string name="app_name">Marly Cordeiro</string>
     <string name="bt_consultas_txt">CONSULTAS</string>
     <string name="bt_pacientes_txt">PACIENTES</string>
     <string name="bt_eventos.txt">EVENTOS</string>
@@ -20,4 +20,6 @@
     <string name="bt_logout">OUT</string>
     <string name="linha_cli_txt_nome">TextView</string>
     <string name="linha_cli_txt_telefone">TextView</string>
+    <string name="consHora">Horário</string>
+    <string name="consData">Dia/Mês/Ano</string>
 </resources>

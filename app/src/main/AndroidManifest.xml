@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_app_marly_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,11 +19,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.PacientesActivity" />
         <activity android:name=".activity.CadastrarPacientesActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.ConsultasActivity" />
-        <activity android:name=".activity.EventosActivity"></activity>
+        <activity android:name=".activity.EventosActivity" />
+        <activity android:name=".activity.CadastrarConsultasActivity" />
+
     </application>
 
 </manifest>
