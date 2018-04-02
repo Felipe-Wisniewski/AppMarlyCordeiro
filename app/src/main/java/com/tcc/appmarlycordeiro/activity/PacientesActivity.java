@@ -35,7 +35,6 @@ public class PacientesActivity extends Activity {
         setContentView(R.layout.activity_pacientes);
 
         inicializarComponentes();
-
         exibirListaPacientes();
 
         fBotaoCadastrarPacientes.setOnClickListener(new View.OnClickListener() {
@@ -47,11 +46,10 @@ public class PacientesActivity extends Activity {
         });
     }
 
-
     private void inicializarComponentes() {
-        pesquisarPacientes = (SearchView) findViewById(R.id.eventos_search_id);
-        listaRecyPacientes = (RecyclerView) findViewById(R.id.pacientes_recycle_id);
-        fBotaoCadastrarPacientes = (FloatingActionButton) findViewById(R.id.pacientes_fbotao_id);
+        pesquisarPacientes = findViewById(R.id.eventos_search_id);
+        listaRecyPacientes = findViewById(R.id.pacientes_recycle_id);
+        fBotaoCadastrarPacientes = findViewById(R.id.pacientes_fbotao_id);
     }
 
     private void exibirListaPacientes() {

@@ -26,7 +26,6 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.View
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
         View view = layoutInflater.inflate(R.layout.linha_pacientes, parent, false);
-
         ViewHolderPaciente holderPaciente = new ViewHolderPaciente(view);
 
         return holderPaciente;
@@ -36,7 +35,6 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.View
     public void onBindViewHolder(PacientesAdapter.ViewHolderPaciente holder, int position) {
 
         if ((listaPacientes != null) && (listaPacientes.size() > 0)){
-
             Paciente pac = listaPacientes.get(position);
 
             holder.txtNome.setText(pac.getNome());
@@ -56,8 +54,8 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.View
         public ViewHolderPaciente(View itemView) {
             super(itemView);
 
-            txtNome = (TextView) itemView.findViewById(R.id.linha_cli_txt_nome_id);
-            txtTelefone = (TextView) itemView.findViewById(R.id.linha_cli_txt_tel_id);
+            txtNome = itemView.findViewById(R.id.linha_cons_txt_consulta_id);
+            txtTelefone = itemView.findViewById(R.id.linha_cli_txt_tel_id);
         }
     }
 

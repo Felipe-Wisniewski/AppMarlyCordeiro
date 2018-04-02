@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Marly Cordeiro</string>
+    <string name="app_name">iTherapeutic</string>
     <string name="bt_consultas_txt">CONSULTAS</string>
     <string name="bt_pacientes_txt">PACIENTES</string>
     <string name="bt_eventos.txt">EVENTOS</string>
@@ -19,7 +19,12 @@
     <string name="login_logomarly">logo marly</string>
     <string name="bt_logout">OUT</string>
     <string name="linha_cli_txt_nome">TextView</string>
+    <string name="linha_consulta">TextView</string>
     <string name="linha_cli_txt_telefone">TextView</string>
     <string name="consHora">Horário</string>
     <string name="consData">Dia/Mês/Ano</string>
+    <string name="sel_pacientes">SELECIONAR PACIENTES</string>
+    <string name="txt_local_evento">Local</string>
+    <string name="logo_ithc1">TODO</string>
+    <string name="logo_ithc2">TODO</string>
 </resources>

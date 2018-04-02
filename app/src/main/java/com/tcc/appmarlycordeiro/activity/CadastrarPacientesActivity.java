@@ -62,20 +62,20 @@ public class CadastrarPacientesActivity extends Activity {
     }
 
     private void inicializarComponentes() {
-        txtNome = (EditText) findViewById(R.id.cadpaci_txt_nome_id);
-        txtEmail = (EditText) findViewById(R.id.cadpaci_txt_email_id);
-        txtTelefone = (EditText) findViewById(R.id.cadpaci_txt_telefone_id);
-        txtEndereco = (EditText) findViewById(R.id.cadpaci_txt_end_id);
-        txtCidade = (EditText) findViewById(R.id.cadpaci_txt_cidade_id);
-        txtObservacao = (EditText) findViewById(R.id.cadpaci_txt_obs_id);
-        radioGroup = (RadioGroup) findViewById(R.id.cadpaci_rdig_sexo_id);
-        btCadastrarCli = (Button) findViewById(R.id.cadpaci_btn_cadastrar_id);
-        spnEstado = (Spinner) findViewById(R.id.cadpaci_sp_estado_id);
+        txtNome = findViewById(R.id.cadpaci_txt_nome_id);
+        txtEmail = findViewById(R.id.cadpaci_txt_email_id);
+        txtTelefone = findViewById(R.id.cadpaci_txt_telefone_id);
+        txtEndereco = findViewById(R.id.cadpaci_txt_end_id);
+        txtCidade = findViewById(R.id.cadpaci_txt_cidade_id);
+        txtObservacao = findViewById(R.id.cadpaci_txt_obs_id);
+        radioGroup = findViewById(R.id.cadpaci_rdig_sexo_id);
+        btCadastrarCli = findViewById(R.id.cadpaci_btn_cadastrar_id);
+        spnEstado = findViewById(R.id.cadpaci_sp_estado_id);
     }
 
     private void efetuaCadastro() {
         int idSexoEscolido = radioGroup.getCheckedRadioButtonId();
-        radioSexo = (RadioButton) findViewById(idSexoEscolido);
+        radioSexo = findViewById(idSexoEscolido);
 
         Paciente p = new Paciente();
 

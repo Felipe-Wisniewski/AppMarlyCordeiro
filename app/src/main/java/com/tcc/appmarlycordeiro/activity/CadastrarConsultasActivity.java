@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,21 +15,23 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tcc.appmarlycordeiro.R;
+import com.tcc.appmarlycordeiro.business.Consulta;
 import com.tcc.appmarlycordeiro.business.Paciente;
 import com.tcc.appmarlycordeiro.database.ConexaoBanco;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 public class CadastrarConsultasActivity extends Activity {
-
     private Spinner spnPacienteConsulta, spnTipoConsulta, spnTerapeutaConsulta;
     private TextView txtVdate, txtVtime;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -36,12 +39,14 @@ public class CadastrarConsultasActivity extends Activity {
     private EditText txtObsConsulta;
     private Button btCadastrarCons;
 
-    private String[] tipoConsultas = {"Coaching com Cavalos", "Coaching Sistêmico", "Constelações com Cavalos",
-                                    "Constelações Familiares", "Constelações Organizacionais", "Constelações TSFI",
-                                    "Abordagem Sistêmica", "Educação Sistêmica", "Terapia Sistêmica Familiar",
-                                    "Terapia Sistêmica Musical"};
+    private String[] tipoConsultas = {"*Consulta","Acunpuntura", "Aromaterapia", "Astrologia",
+            "Coaching com Cavalos", "Coaching Sistêmico", "Constelação Familiar", "Educação Sistêmica",
+            "Fitoterapia", "Geoterapia Shiatsu", "Ioga", "Meditação", "Reiki", "Terapia Sistêmica Familiar",
+            "Terapia Sistêmica Musical", "Watsu"};
 
-    private String[] nomeTerapeutas = {"Marly Cordeiro"};
+    private String[] nomeTerapeutas = {"*Terapeuta", "Ana Maria", "Anna Battistel", "Ida Maria Mello",
+            "Juca Amaral", "Leonardo de Albuquerque", "Marly Cordeiro", "Myrta Regina", "Sílvia Fleury",
+            "Socorro Bastos", "Vagner Moreira"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,27 +59,41 @@ public class CadastrarConsultasActivity extends Activity {
         inicializarDatePicker();
         inicializarTimePicker();
 
+        btCadastrarCons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkInput()){
+                    efetuarCadastro();
+                }else{
+                    alert("Preencha todos os *campos !");
+                }
+            }
+        });
     }
 
     private void inicializarComponentes() {
-        spnPacienteConsulta = (Spinner) findViewById(R.id.cadcons_spin_paci_id);
-        spnTipoConsulta = (Spinner) findViewById(R.id.cadcons_spin_cons_id);
-        spnTerapeutaConsulta = (Spinner) findViewById(R.id.cadcons_spin_terap_id);
-        txtVdate = (TextView) findViewById(R.id.cadcons_txtv_date_id);
-        txtVtime = (TextView) findViewById(R.id.cadcons_txtv_time_id);
-        txtObsConsulta = (EditText) findViewById(R.id.cadcons_txt_obs_id);
-        btCadastrarCons = (Button) findViewById(R.id.cadcons_btn_cadastrar_id);
+        spnPacienteConsulta = findViewById(R.id.cadcons_spin_paci_id);
+        spnTipoConsulta = findViewById(R.id.cadcons_spin_cons_id);
+        spnTerapeutaConsulta = findViewById(R.id.cadcons_spin_terap_id);
+        txtVdate = findViewById(R.id.cadcons_txtv_date_id);
+        txtVtime = findViewById(R.id.cadcons_txtv_time_id);
+        txtObsConsulta = findViewById(R.id.cadcons_txt_obs_id);
+        btCadastrarCons = findViewById(R.id.cadcons_btn_cadastrar_id);
     }
 
     private void inicializarSpinnerPacientes() {
         ConexaoBanco.inicializarConexaoBanco();
-
         Query query;
+
         query = ConexaoBanco.getPacientesBanco();
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Paciente vazio = new Paciente();
                 List<Paciente> listaPacientes = new ArrayList<>();
+
+                vazio.setNome("*Paciente");
+                listaPacientes.add(vazio);
 
                 for (DataSnapshot objSnapshot:dataSnapshot.getChildren()){
                     Paciente p = objSnapshot.getValue(Paciente.class);
@@ -92,7 +111,6 @@ public class CadastrarConsultasActivity extends Activity {
     }
 
     private void inicializarSpinners() {
-
         ArrayAdapter<String> adapterTpConsultas = new ArrayAdapter<String>(CadastrarConsultasActivity.this, R.layout.spinner_item , tipoConsultas);
         spnTipoConsulta.setAdapter(adapterTpConsultas);
 
@@ -123,7 +141,6 @@ public class CadastrarConsultasActivity extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-
                 String date = dayOfMonth + "/" + month + "/" + year;
                 txtVdate.setText(date);
             }
@@ -150,10 +167,54 @@ public class CadastrarConsultasActivity extends Activity {
         mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                String time = hourOfDay + " : " + minute + "h";
-                txtVtime.setText(time);
+                if(minute < 10){
+                    String time = hourOfDay + ":0" + minute;
+                    txtVtime.setText(time);
+                }else{
+                    String time = hourOfDay + ":" + minute;
+                    txtVtime.setText(time);
+                }
             }
         };
     }
+
+    private Boolean checkInput() {
+        if(spnPacienteConsulta.getSelectedItem().toString().equals("*Paciente") ||
+                spnTipoConsulta.getSelectedItem().toString().equals("*Consulta") ||
+                spnTerapeutaConsulta.getSelectedItem().toString().equals("*Terapeuta")){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+   private void efetuarCadastro() {
+        String spnPaciSelect, strPaciId;
+        spnPaciSelect = spnPacienteConsulta.getSelectedItem().toString().trim();
+        strPaciId = ConexaoBanco.getPacienteId(spnPaciSelect);
+
+        Consulta c = new Consulta();
+
+        c.setIdConsulta(UUID.randomUUID().toString());
+        c.setTipoConsulta(spnTipoConsulta.getSelectedItem().toString());
+        c.setNomeTerapeuta(spnTerapeutaConsulta.getSelectedItem().toString());
+        c.setDataConsulta(txtVdate.getText().toString());
+        c.setHoraConsulta(txtVtime.getText().toString());
+        c.setObservacaoConsulta(txtObsConsulta.getText().toString());
+        c.setNomePaciente(spnPaciSelect);
+
+        ConexaoBanco.salvarConsultaBanco(c.getIdConsulta(), c);
+
+        limpaCampos();
+        finish();
+    }
+
+    private void limpaCampos() {
+
+    }
+
+    private void alert(String s) {
+        Toast.makeText(CadastrarConsultasActivity.this, s, Toast.LENGTH_LONG).show();
+    }
+
 }

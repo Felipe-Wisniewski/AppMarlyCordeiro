@@ -3,14 +3,19 @@
     package="com.tcc.appmarlycordeiro">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_app_marly"
+        android:icon="@mipmap/ic_itherapeutic"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_app_marly_round"
+        android:roundIcon="@mipmap/ic_itherapeutic_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDvb2O_IdJdiJAvevC3P0-k5IHWjq0rxe4"/>
 
         <activity android:name=".activity.MainActivity">
             <intent-filter>
@@ -26,6 +31,7 @@
         <activity android:name=".activity.ConsultasActivity" />
         <activity android:name=".activity.EventosActivity" />
         <activity android:name=".activity.CadastrarConsultasActivity" />
+        <activity android:name=".activity.CadastrarEventosActivity" />
 
     </application>
 

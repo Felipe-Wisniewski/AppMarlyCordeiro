@@ -13,18 +13,31 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="5dp"
-        android:text="@string/linha_cli_txt_telefone"
+        android:text="@string/linha_consulta"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/linha_cli_txt_tel_id"
+        android:id="@+id/linha_cons_txt_pac_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linha_cons_txt_consulta_id"
         android:layout_centerHorizontal="true"
+        android:paddingBottom="2dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="2dp"
+        android:text="@string/linha_consulta" />
+
+    <TextView
+        android:id="@+id/linha_cons_txt_data_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linha_cons_txt_pac_id"
+        android:layout_centerHorizontal="true"
         android:paddingBottom="5dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="@string/linha_cli_txt_nome" />
+        android:text="@string/linha_consulta" />
+
 </android.widget.RelativeLayout>
