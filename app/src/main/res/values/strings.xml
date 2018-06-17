@@ -17,7 +17,7 @@
     <string name="login_senha_hint">Senha</string>
     <string name="login_button">LOGIN</string>
     <string name="login_logomarly">logo marly</string>
-    <string name="bt_logout">OUT</string>
+    <string name="bt_logout">Sair</string>
     <string name="linha_cli_txt_nome">TextView</string>
     <string name="linha_consulta">TextView</string>
     <string name="linha_cli_txt_telefone">TextView</string>
