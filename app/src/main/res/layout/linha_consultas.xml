@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/linha_cons_txt_consulta_id"
+        android:id="@+id/linha_evento_txt_evento_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -21,7 +22,7 @@
         android:id="@+id/linha_cons_txt_pac_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linha_cons_txt_consulta_id"
+        android:layout_below="@+id/linha_evento_txt_evento_id"
         android:layout_centerHorizontal="true"
         android:paddingBottom="2dp"
         android:paddingLeft="16dp"
@@ -39,5 +40,16 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:text="@string/linha_consulta" />
+
+    <ImageButton
+        android:id="@+id/linha_cons_delete_button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@color/FundoApp"
+        android:contentDescription="@string/icon3"
+        android:src="@android:drawable/ic_delete"
+        android:visibility="visible" />
 
 </android.widget.RelativeLayout>

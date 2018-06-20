@@ -1,6 +1,9 @@
 package com.tcc.appmarlycordeiro.activity;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -26,7 +29,6 @@ public class PacientesActivity extends Activity {
     private SearchView pesquisarPacientes;
     private RecyclerView listaRecyPacientes;
     private FloatingActionButton fBotaoCadastrarPacientes;
-
     private PacientesAdapter pacientesAdapter;
 
     @Override
@@ -47,7 +49,7 @@ public class PacientesActivity extends Activity {
     }
 
     private void inicializarComponentes() {
-        pesquisarPacientes = findViewById(R.id.eventos_search_id);
+        pesquisarPacientes = findViewById(R.id.pacientes_search_id);
         listaRecyPacientes = findViewById(R.id.pacientes_recycle_id);
         fBotaoCadastrarPacientes = findViewById(R.id.pacientes_fbotao_id);
     }
@@ -69,7 +71,7 @@ public class PacientesActivity extends Activity {
                     Paciente p = objSnapshot.getValue(Paciente.class);
                     listaPacientes.add(p);
                 }
-                pacientesAdapter = new PacientesAdapter(listaPacientes);
+                pacientesAdapter = new PacientesAdapter(listaPacientes, PacientesActivity.this);
                 listaRecyPacientes.setAdapter(pacientesAdapter);
             }
 

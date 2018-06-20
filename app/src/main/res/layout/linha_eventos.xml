@@ -19,10 +19,21 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/linha_cli_txt_tel_id"
+        android:id="@+id/linha_evento_txt_locall_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linha_evento_txt_evento_id"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="5dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/linha_cli_txt_nome" />
+
+    <TextView
+        android:id="@+id/linha_evento_txt_data_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linha_evento_txt_locall_id"
         android:layout_centerHorizontal="true"
         android:paddingBottom="5dp"
         android:paddingLeft="16dp"
@@ -41,15 +52,4 @@
         android:src="@android:drawable/ic_delete"
         android:visibility="visible" />
 
-    <ImageButton
-        android:id="@+id/linha_telefone_button"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/linha_evento_delete_button"
-        android:background="@color/FundoApp"
-        android:contentDescription="@string/icon1"
-        android:elevation="0dp"
-        android:src="@android:drawable/sym_action_call"
-        android:visibility="visible" />
 </android.widget.RelativeLayout>

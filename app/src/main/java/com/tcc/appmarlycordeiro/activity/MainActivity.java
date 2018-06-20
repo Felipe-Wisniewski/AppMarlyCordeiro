@@ -59,11 +59,11 @@ public class MainActivity extends Activity {
     }
 
     private void inicializarComponentes() {
-        btPacientes = (Button) findViewById(R.id.main_bt_pacientes_id);
-        btConsultas = (Button) findViewById(R.id.main_bt_consultas_id);
-        btEventos = (Button) findViewById(R.id.main_bt_eventos_id);
-        btLogout = (Button) findViewById(R.id.main_bt_logout_id);
-        currentUser = (TextView) findViewById(R.id.main_txt_user_id);
+        btPacientes = findViewById(R.id.main_bt_pacientes_id);
+        btConsultas = findViewById(R.id.main_bt_consultas_id);
+        btEventos = findViewById(R.id.main_bt_eventos_id);
+        btLogout = findViewById(R.id.main_bt_logout_id);
+        currentUser = findViewById(R.id.main_txt_user_id);
     }
 
     @Override

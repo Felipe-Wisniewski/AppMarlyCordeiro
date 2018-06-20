@@ -48,7 +48,7 @@ public class ConsultasActivity extends Activity {
     }
 
     private void inicializarComponentes() {
-        pesquisarConsultas = findViewById(R.id.eventos_search_id);
+        pesquisarConsultas = findViewById(R.id.pacientes_search_id);
         listaRecyConsultas = findViewById(R.id.consultas_recycle_id);
         fbtCadastrarConsulta = findViewById(R.id.consultas_fbotao_id);
     }
@@ -70,7 +70,7 @@ public class ConsultasActivity extends Activity {
                     Consulta c = objSnapshot.getValue(Consulta.class);
                     listaConsultas.add(c);
                 }
-                consultasAdapter = new ConsultasAdapter(listaConsultas);
+                consultasAdapter = new ConsultasAdapter(listaConsultas, ConsultasActivity.this);
                 listaRecyConsultas.setAdapter(consultasAdapter);
             }
 

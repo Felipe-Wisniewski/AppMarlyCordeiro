@@ -6,7 +6,9 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,18 +23,30 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.tcc.appmarlycordeiro.R;
+import com.tcc.appmarlycordeiro.business.Evento;
+import com.tcc.appmarlycordeiro.business.Paciente;
+import com.tcc.appmarlycordeiro.database.ConexaoBanco;
+import com.tcc.appmarlycordeiro.utility.PacientesAdapter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
 public class CadastrarEventosActivity extends Activity {
     private Spinner spnTipoEvento, spnTerapeutaEvento;
     private TextView txtVlocalEvento, txtVdateEvento, txtVtimeEvento;
     int PLACE_PICKER_REQUEST = 1;
+    private String localUrl;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private TimePickerDialog.OnTimeSetListener mTimeSetListener;
     private EditText txtObservacaoEvento;
-    private Button btSelecionarPacientes, btCadastrarEvento;
+    private Button btCadastrarEvento;
     
     private String[] tipoEventos = {"*Evento", "Abordagem Sistêmica", "Constelação Familiar em Grupo",
             "Constelações Familiares", "Constelações Organizacionais", "Constelações Sistêmicas com Cavalos",
@@ -60,6 +74,10 @@ public class CadastrarEventosActivity extends Activity {
             public void onClick(View v) {
                 if(checkInput()){
                     efetuarCadastro();
+                    alert("Evento Criado com Sucesso");
+                    enviaEmail();
+                    limpaCampos();
+                    finish();
                 }else{
                     alert("Preencha todos os *campos !");
                 }
@@ -75,7 +93,6 @@ public class CadastrarEventosActivity extends Activity {
         txtVdateEvento = findViewById(R.id.cadevento_txtv_date_id);
         txtVtimeEvento = findViewById(R.id.cadevento_txtv_time_id);
         txtObservacaoEvento = findViewById(R.id.cadevento_txt_obs_id);
-        btSelecionarPacientes = findViewById(R.id.cadevento_btn_selpac_id);
         btCadastrarEvento = findViewById(R.id.cadevento_btn_cadastrar_id);
     }
 
@@ -92,8 +109,8 @@ public class CadastrarEventosActivity extends Activity {
             @Override
             public void onClick(View v) {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
                 Intent i;
+
                 try {
                     i = builder.build(CadastrarEventosActivity.this);
                     startActivityForResult(i, PLACE_PICKER_REQUEST);
@@ -111,6 +128,7 @@ public class CadastrarEventosActivity extends Activity {
             if(resultCode==RESULT_OK){
                 Place place = PlacePicker.getPlace(data, CadastrarEventosActivity.this);
                 String address = String.format("Local: %s", place.getAddress());
+                localUrl = String.format("%s", place.getWebsiteUri());
                 txtVlocalEvento.setText(address);
 
                 alert(address);
@@ -188,13 +206,68 @@ public class CadastrarEventosActivity extends Activity {
     }
 
     private void efetuarCadastro() {
-        
+        Evento e = new Evento();
 
-        limpaCampos();
-        finish();
+        e.setIdEvento(UUID.randomUUID().toString());
+        e.setTipoEvento(spnTipoEvento.getSelectedItem().toString());
+        e.setNomeTerapeuta(spnTerapeutaEvento.getSelectedItem().toString());
+        e.setLocalEvento(txtVlocalEvento.getText().toString());
+        e.setLocalUrl(localUrl);
+        e.setDataEvento(txtVdateEvento.getText().toString());
+        e.setHoraEvento(txtVtimeEvento.getText().toString());
+        e.setObservacaoEvento(txtObservacaoEvento.getText().toString());
+
+        ConexaoBanco.inicializarConexaoBanco();
+        ConexaoBanco.salvarEventoBanco(e.getIdEvento(), e);
+    }
+
+    private void enviaEmail() {
+        String[] to = getEmails();
+        String subject = "Evento " + spnTipoEvento.getSelectedItem().toString();
+        String message = "Olá, Você foi convidado para o evento " + spnTerapeutaEvento.getSelectedItem().toString() + " que acontecera no " +
+                txtVlocalEvento.getText().toString() + " no dia: " + txtVdateEvento.getText().toString() + " às " + txtVtimeEvento.getText().toString() +
+                ". Contamos com sua presença, equipe iTherapeutic.";
+
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_EMAIL, to);
+        email.putExtra(Intent.EXTRA_SUBJECT, subject);
+        email.putExtra(Intent.EXTRA_TEXT, message);
+        email.setType("message/rfc822");
+
+        startActivity(Intent.createChooser(email, "E-mail"));
+    }
+
+    private String[] getEmails() {
+        final String[] emails = new String[]{};
+        Query query;
+
+        ConexaoBanco.inicializarConexaoBanco();
+        query = ConexaoBanco.getPacientesBanco();
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int i = 0;
+                for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
+                    Paciente p = objSnapshot.getValue(Paciente.class);
+                    emails[i] = p.getEmail();
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {   }
+        });
+        return emails;
     }
 
     private void limpaCampos() {
+        spnTipoEvento.clearFocus();
+        spnTerapeutaEvento.clearFocus();
+        txtVlocalEvento.setText("");
+        localUrl = "";
+        txtVdateEvento.setText("");
+        txtVtimeEvento.setText("");
+        txtObservacaoEvento.setText("");
     }
 
     private void alert(String s) {

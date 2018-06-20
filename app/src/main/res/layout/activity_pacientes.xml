@@ -7,7 +7,7 @@
     tools:context="com.tcc.appmarlycordeiro.activity.PacientesActivity">
 
     <SearchView
-        android:id="@+id/eventos_search_id"
+        android:id="@+id/pacientes_search_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventos_search_id"
+        app:layout_constraintTop_toBottomOf="@+id/pacientes_search_id"
         app:layout_constraintVertical_bias="0.0" />
 
     <android.support.design.widget.FloatingActionButton
@@ -42,7 +42,7 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@android:drawable/ic_menu_add"
-        app:backgroundTint="?attr/colorButtonNormal"
+        app:backgroundTint="?android:attr/colorButtonNormal"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -8,6 +8,7 @@ import com.google.firebase.database.Query;
 
 import com.google.firebase.database.ValueEventListener;
 import com.tcc.appmarlycordeiro.business.Consulta;
+import com.tcc.appmarlycordeiro.business.Evento;
 import com.tcc.appmarlycordeiro.business.Paciente;
 
 public class ConexaoBanco {
@@ -20,7 +21,6 @@ public class ConexaoBanco {
     private ConexaoBanco(){ };
 
     public static void inicializarConexaoBanco(){
-    //    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
     }
@@ -33,6 +33,10 @@ public class ConexaoBanco {
         databaseReference.child("Consultas").child(id).setValue(c);
     }
 
+    public static void salvarEventoBanco(String id, Evento e){
+        databaseReference.child("Eventos").child(id).setValue(e);
+    }
+
     public static Query getPacientesBanco() {
         Query query;
         query = databaseReference.child("Pacientes").orderByChild("nome");
@@ -42,6 +46,12 @@ public class ConexaoBanco {
     public static Query getConsultasBanco(){
         Query query;
         query = databaseReference.child("Consultas").orderByChild("dataConsulta");
+        return query;
+    }
+
+    public static Query getEventosBanco(){
+        Query query;
+        query = databaseReference.child("Eventos").orderByChild("dataEvento");
         return query;
     }
 
@@ -64,5 +74,17 @@ public class ConexaoBanco {
             }
         });
         return strPaciId;
+    }
+
+    public static void removerPaciente(String id) {
+        databaseReference.child("Pacientes").child(id).removeValue();
+    }
+
+    public static void removerConsulta(String id) {
+        databaseReference.child("Consultas").child(id).removeValue();
+    }
+
+    public static void removerEvento(String id) {
+        databaseReference.child("Eventos").child(id).removeValue();
     }
 }
