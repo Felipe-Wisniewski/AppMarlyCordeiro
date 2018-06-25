@@ -16,8 +16,6 @@ public class ConexaoBanco {
     private static FirebaseDatabase firebaseDatabase;
     private static DatabaseReference databaseReference;
 
-    private static String strPaciId;
-
     private ConexaoBanco(){ };
 
     public static void inicializarConexaoBanco(){
@@ -53,27 +51,6 @@ public class ConexaoBanco {
         Query query;
         query = databaseReference.child("Eventos").orderByChild("dataEvento");
         return query;
-    }
-
-    public static String getPacienteId(String nome){
-        Query query;
-        query = databaseReference.child("Pacientes").orderByChild("nome").equalTo(nome);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot objSnapshot:dataSnapshot.getChildren()){
-                        strPaciId = objSnapshot.getKey();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return strPaciId;
     }
 
     public static void removerPaciente(String id) {

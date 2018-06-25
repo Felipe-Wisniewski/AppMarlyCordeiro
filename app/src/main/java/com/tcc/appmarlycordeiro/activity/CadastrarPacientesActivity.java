@@ -1,6 +1,7 @@
 package com.tcc.appmarlycordeiro.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,7 +25,6 @@ public class CadastrarPacientesActivity extends Activity {
     private RadioGroup radioGroup;
     private RadioButton radioSexo;
     private Button btCadastrarCli;
-
     private Spinner spnEstado;
     private String[] estados = {"Acre","Alagoas","Amapá","Amazonas","Bahia","Ceará","Distrito Federal","Espírito Santo","Goiás","Maranhão",
             "Mato Grosso","Mato Grosso do Sul","Minas Gerais","Paraná","Paraíba","Pará","Pernambuco","Piauí",
@@ -46,6 +46,10 @@ public class CadastrarPacientesActivity extends Activity {
             public void onClick(View v) {
                 if(checkInput()){
                     efetuaCadastro();
+                    alert("paciente cadastrado");
+                    enviaEmail();
+                    limpaCampos();
+                    finish();
                 }else{
                     alert("preencha os campos obrigatórios(*)");
                 }
@@ -78,7 +82,6 @@ public class CadastrarPacientesActivity extends Activity {
         radioSexo = findViewById(idSexoEscolido);
 
         Paciente p = new Paciente();
-
         p.setIdPac(UUID.randomUUID().toString());
         p.setNome(txtNome.getText().toString());
         p.setEmail(txtEmail.getText().toString());
@@ -91,11 +94,21 @@ public class CadastrarPacientesActivity extends Activity {
 
         ConexaoBanco.inicializarConexaoBanco();
         ConexaoBanco.salvarPacienteBanco(p.getIdPac(), p);
+    }
 
-        alert("paciente cadastrado");
+    private void enviaEmail() {
+        String[] to = { txtEmail.getText().toString() };
+        String subject = "Cadastro iTherapeutic";
+        String message = "Olá " + txtNome.getText().toString() + ", seu cadastro foi realizado no iTherapeutic, conhecça nossos serviços e participe dos nossos eventos. \n" +
+                "Acesse: www.itherapeutic.com e fique por dentro dos últimos acontecimentos.";
 
-        limpaCampos();
-        finish();
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.setType("message/rfc822");
+        email.putExtra(Intent.EXTRA_EMAIL, to);
+        email.putExtra(Intent.EXTRA_SUBJECT, subject);
+        email.putExtra(Intent.EXTRA_TEXT, message);
+
+        startActivity(Intent.createChooser(email, "E-mail"));
     }
 
     private void limpaCampos() {

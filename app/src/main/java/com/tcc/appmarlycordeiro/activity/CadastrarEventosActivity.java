@@ -6,9 +6,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -31,7 +29,8 @@ import com.tcc.appmarlycordeiro.R;
 import com.tcc.appmarlycordeiro.business.Evento;
 import com.tcc.appmarlycordeiro.business.Paciente;
 import com.tcc.appmarlycordeiro.database.ConexaoBanco;
-import com.tcc.appmarlycordeiro.utility.PacientesAdapter;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,21 +38,26 @@ import java.util.List;
 import java.util.UUID;
 
 public class CadastrarEventosActivity extends Activity {
+    /*private List<Paciente> listaPacientes = new ArrayList<>();
+    private List<String> emailsPacientes = new ArrayList<>();
+    private StringBuilder emails = new StringBuilder(100);*/
+
     private Spinner spnTipoEvento, spnTerapeutaEvento;
     private TextView txtVlocalEvento, txtVdateEvento, txtVtimeEvento;
+
     int PLACE_PICKER_REQUEST = 1;
     private String localUrl;
+
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private TimePickerDialog.OnTimeSetListener mTimeSetListener;
     private EditText txtObservacaoEvento;
+
     private Button btCadastrarEvento;
-    
     private String[] tipoEventos = {"*Evento", "Abordagem Sistêmica", "Constelação Familiar em Grupo",
             "Constelações Familiares", "Constelações Organizacionais", "Constelações Sistêmicas com Cavalos",
             "Constelações TSFI", "Jornada de Meditação", "Meditação Ativa do Osho", "Palestra",
             "Renascendo na percepção dos Sentidos", "Renascimento em Respiração", "Vivência em Grupo",
             "Workshop"};
-
     private String[] nomeTerapeutas = {"*Terapeuta", "Ana Maria", "Anna Battistel", "Ida Maria Mello",
             "Juca Amaral", "Leonardo de Albuquerque", "Marly Cordeiro", "Myrta Regina", "Sílvia Fleury",
             "Socorro Bastos", "Vagner Moreira"};
@@ -68,7 +72,7 @@ public class CadastrarEventosActivity extends Activity {
         inicializarPlacePicker();
         inicializarDataPicker();
         inicializarTimePicker();
-        
+
         btCadastrarEvento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +87,6 @@ public class CadastrarEventosActivity extends Activity {
                 }
             }
         });
-
     }
 
     private void inicializarComponentes() {
@@ -207,7 +210,6 @@ public class CadastrarEventosActivity extends Activity {
 
     private void efetuarCadastro() {
         Evento e = new Evento();
-
         e.setIdEvento(UUID.randomUUID().toString());
         e.setTipoEvento(spnTipoEvento.getSelectedItem().toString());
         e.setNomeTerapeuta(spnTerapeutaEvento.getSelectedItem().toString());
@@ -222,43 +224,47 @@ public class CadastrarEventosActivity extends Activity {
     }
 
     private void enviaEmail() {
-        String[] to = getEmails();
+        String[] to = {"adrianegalisteu@hotmail.com","anapaula@arosio.com","ayrton@senna.com","daniel@catra.com","pele@pele.com","felipecordeiro4@gmail.com","felipewisniewski@gmail.com","gilmarmendes@brasil.com",
+        "jo@geladeira.com","jorgechiara@gmail.com"};
         String subject = "Evento " + spnTipoEvento.getSelectedItem().toString();
-        String message = "Olá, Você foi convidado para o evento " + spnTerapeutaEvento.getSelectedItem().toString() + " que acontecera no " +
+        String msg = "Olá, Você foi convidado para o evento " + spnTipoEvento.getSelectedItem().toString() + " que acontecera no " +
                 txtVlocalEvento.getText().toString() + " no dia: " + txtVdateEvento.getText().toString() + " às " + txtVtimeEvento.getText().toString() +
                 ". Contamos com sua presença, equipe iTherapeutic.";
 
         Intent email = new Intent(Intent.ACTION_SEND);
+        email.setType("*/*");
         email.putExtra(Intent.EXTRA_EMAIL, to);
         email.putExtra(Intent.EXTRA_SUBJECT, subject);
-        email.putExtra(Intent.EXTRA_TEXT, message);
-        email.setType("message/rfc822");
+        email.putExtra(Intent.EXTRA_TEXT, msg);
 
         startActivity(Intent.createChooser(email, "E-mail"));
     }
 
-    private String[] getEmails() {
-        final String[] emails = new String[]{};
-        Query query;
-
+    /*private void extraiEmail () {
         ConexaoBanco.inicializarConexaoBanco();
+        Query query;
         query = ConexaoBanco.getPacientesBanco();
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int i = 0;
                 for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                     Paciente p = objSnapshot.getValue(Paciente.class);
-                    emails[i] = p.getEmail();
-                    i++;
+                    listaPacientes.add(p);
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {   }
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
-        return emails;
-    }
+        for(int i = 0; i < listaPacientes.size(); i++) {
+            Paciente pac = listaPacientes.get(i);
+            emailsPacientes.add(pac.getEmail());
+        }
+        for (String e : emailsPacientes) {
+            emails.append(e).append(",");
+        }
+    }*/
 
     private void limpaCampos() {
         spnTipoEvento.clearFocus();

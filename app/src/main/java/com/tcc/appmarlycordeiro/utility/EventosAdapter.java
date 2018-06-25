@@ -47,14 +47,14 @@ public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.ViewHold
             holder.txtEvento.setText(eve.getTipoEvento());
             holder.txtLocal.setText(eve.getLocalEvento());
 
-            holder.txtLocal.setOnClickListener(new View.OnClickListener() {
+           /* holder.txtLocal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(eve.getLocalUrl()));
                     mapIntent.setPackage("com.google.android.apps.maps");
                     context.startActivity(mapIntent);
                 }
-            });
+            });*/
 
             holder.txtData.setText(eve.getDataEvento());
 

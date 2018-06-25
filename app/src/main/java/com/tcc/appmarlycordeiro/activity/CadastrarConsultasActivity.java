@@ -3,6 +3,7 @@ package com.tcc.appmarlycordeiro.activity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -32,18 +33,18 @@ import java.util.List;
 import java.util.UUID;
 
 public class CadastrarConsultasActivity extends Activity {
+    private String emailPaciente, spnPaciSelect;
     private Spinner spnPacienteConsulta, spnTipoConsulta, spnTerapeutaConsulta;
+    private List<Paciente> listaPacientes = new ArrayList<>();
     private TextView txtVdate, txtVtime;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private TimePickerDialog.OnTimeSetListener mTimeSetListener;
     private EditText txtObsConsulta;
     private Button btCadastrarCons;
-
     private String[] tipoConsultas = {"*Consulta","Acunpuntura", "Aromaterapia", "Astrologia",
             "Coaching com Cavalos", "Coaching Sistêmico", "Constelação Familiar", "Educação Sistêmica",
             "Fitoterapia", "Geoterapia Shiatsu", "Ioga", "Meditação", "Reiki", "Terapia Sistêmica Familiar",
             "Terapia Sistêmica Musical", "Watsu"};
-
     private String[] nomeTerapeutas = {"*Terapeuta", "Ana Maria", "Anna Battistel", "Ida Maria Mello",
             "Juca Amaral", "Leonardo de Albuquerque", "Marly Cordeiro", "Myrta Regina", "Sílvia Fleury",
             "Socorro Bastos", "Vagner Moreira"};
@@ -63,7 +64,10 @@ public class CadastrarConsultasActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(checkInput()){
+                    extraiEmail();
                     efetuarCadastro();
+                    enviaEmail();
+                    finish();
                 }else{
                     alert("Preencha todos os *campos !");
                 }
@@ -84,14 +88,11 @@ public class CadastrarConsultasActivity extends Activity {
     private void inicializarSpinnerPacientes() {
         ConexaoBanco.inicializarConexaoBanco();
         Query query;
-
         query = ConexaoBanco.getPacientesBanco();
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Paciente vazio = new Paciente();
-                List<Paciente> listaPacientes = new ArrayList<>();
-
                 vazio.setNome("*Paciente");
                 listaPacientes.add(vazio);
 
@@ -102,11 +103,8 @@ public class CadastrarConsultasActivity extends Activity {
                 ArrayAdapter<Paciente> adapterPacientes = new ArrayAdapter<Paciente>(CadastrarConsultasActivity.this, R.layout.spinner_item , listaPacientes);
                 spnPacienteConsulta.setAdapter(adapterPacientes);
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {  }
         });
     }
 
@@ -184,17 +182,13 @@ public class CadastrarConsultasActivity extends Activity {
                 spnTerapeutaConsulta.getSelectedItem().toString().equals("*Terapeuta")){
             return false;
         }else{
+            spnPaciSelect = spnPacienteConsulta.getSelectedItem().toString().trim();
             return true;
         }
     }
 
    private void efetuarCadastro() {
-        String spnPaciSelect, strPaciId;
-        spnPaciSelect = spnPacienteConsulta.getSelectedItem().toString().trim();
-        strPaciId = ConexaoBanco.getPacienteId(spnPaciSelect);
-
         Consulta c = new Consulta();
-
         c.setIdConsulta(UUID.randomUUID().toString());
         c.setTipoConsulta(spnTipoConsulta.getSelectedItem().toString());
         c.setNomeTerapeuta(spnTerapeutaConsulta.getSelectedItem().toString());
@@ -204,13 +198,30 @@ public class CadastrarConsultasActivity extends Activity {
         c.setNomePaciente(spnPaciSelect);
 
         ConexaoBanco.salvarConsultaBanco(c.getIdConsulta(), c);
-
-        limpaCampos();
-        finish();
     }
 
-    private void limpaCampos() {
+    private void extraiEmail() {
+        for(int i = 0; i < listaPacientes.size(); i++) {
+            Paciente pac = listaPacientes.get(i);
+            if(pac.getNome() == spnPaciSelect) {
+                emailPaciente = pac.getEmail();
+            }
+        }
+    }
 
+    private void enviaEmail() {
+        String[] to = { emailPaciente };
+        String subject = "Consulta iTherapeutic";
+        String message = "Olá " + spnPaciSelect + ", sua consulta com a terapeuta " + spnTerapeutaConsulta.getSelectedItem().toString() +
+                " foi agendada para o dia: " + txtVdate.getText().toString() + " às " + txtVtime.getText().toString() + " horas. Equipe iTherapeutic.";
+
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.setType("*/*");
+        email.putExtra(Intent.EXTRA_EMAIL, to);
+        email.putExtra(Intent.EXTRA_SUBJECT, subject);
+        email.putExtra(Intent.EXTRA_TEXT, message);
+
+        startActivity(Intent.createChooser(email, "E-mail"));
     }
 
     private void alert(String s) {

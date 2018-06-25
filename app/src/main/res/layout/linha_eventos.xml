@@ -24,9 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linha_evento_txt_evento_id"
         android:layout_centerHorizontal="true"
-        android:paddingBottom="5dp"
+        android:paddingBottom="2dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:paddingTop="2dp"
         android:text="@string/linha_cli_txt_nome" />
 
     <TextView
@@ -45,10 +46,11 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:background="@color/FundoApp"
         android:contentDescription="@string/icon2"
         android:elevation="0dp"
+        android:paddingRight="16dp"
         android:src="@android:drawable/ic_delete"
         android:visibility="visible" />
 
